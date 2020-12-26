@@ -112,7 +112,7 @@ def decrypt_auto(filename, password, salt, current_file):
         for subdir, dirs, files_indir in os.walk(filename):
             for filename_indir in files_indir:
                 filepath = subdir + os.sep + filename_indir
-                if os.path.abspath(current_file) == os.path.abspath(filepath) or os.path.abspath(subdir + os.sep + 'Crypting.Log') == os.path.abspath(filepath):
+                if os.path.abspath(current_file) == os.path.abspath(filepath) or os.path.abspath(subdir + os.sep + 'Crypting.Log') == os.path.abspath(filepath) or os.path.abspath(__file__) == os.path.abspath(filepath):
                     continue
                 with open(filepath, 'rb') as file:
                     try:
