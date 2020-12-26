@@ -49,7 +49,7 @@ def decrypt_manual(key, filename):
         with open(filename, 'wb') as file:
             return file.write(decrypted)
 
-def encrypt_auto(filename, password, salt):
+def encrypt_auto(filename, password, salt, current_file):
     logfile = open('Crypting.Log', 'w')
     salt = bytes(salt, encoding='utf-8')
     password = bytes(password, encoding='utf-8')
@@ -63,13 +63,12 @@ def encrypt_auto(filename, password, salt):
 
     f = Fernet(key)
 
-    if filename == '.':
-        return print("You are trying to encrypt the current folder.")
-
     if os.path.isdir(filename):
         for subdir, dirs, files_indir in os.walk(filename):
             for filename_indir in files_indir:
                 filepath = subdir + os.sep + filename_indir
+                if os.path.abspath(current_file) == os.path.abspath(filepath) or os.path.abspath(subdir + os.sep + 'Crypting.Log') == os.path.abspath(filepath):
+                    continue
                 with open(filepath, 'rb') as file:
                     try:
                         file_data = file.read()
@@ -95,7 +94,7 @@ def encrypt_auto(filename, password, salt):
             with open(filename, 'wb') as file:
                 return file.write(encrypted)
 
-def decrypt_auto(filename, password, salt):
+def decrypt_auto(filename, password, salt, current_file):
     logfile = open('Crypting.Log', 'w')
     salt = bytes(salt, encoding='utf-8')
     password = bytes(password, encoding='utf-8')
@@ -113,6 +112,8 @@ def decrypt_auto(filename, password, salt):
         for subdir, dirs, files_indir in os.walk(filename):
             for filename_indir in files_indir:
                 filepath = subdir + os.sep + filename_indir
+                if os.path.abspath(current_file) == os.path.abspath(filepath) or os.path.abspath(subdir + os.sep + 'Crypting.Log') == os.path.abspath(filepath):
+                    continue
                 with open(filepath, 'rb') as file:
                     try:
                         file_data = file.read()
