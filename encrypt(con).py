@@ -4,7 +4,7 @@ print("Encrypt:1 Decrypt:2")
 enorde = int(input(":"))
 print("Password")
 password = input(":")
-print("Filename")
+print("File or Directory name")
 filename = input(":")
 
 if enorde == 1:
