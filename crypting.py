@@ -50,7 +50,7 @@ def decrypt_manual(key, filename):
             return file.write(decrypted)
 
 def encrypt_auto(filename, password, salt):
-    logfile = open('CryptingLog.txt', 'w')
+    logfile = open('Crypting.Log', 'w')
     salt = bytes(salt, encoding='utf-8')
     password = bytes(password, encoding='utf-8')
     kdf = PBKDF2HMAC(
@@ -71,14 +71,19 @@ def encrypt_auto(filename, password, salt):
             for filename_indir in files_indir:
                 filepath = subdir + os.sep + filename_indir
                 with open(filepath, 'rb') as file:
-                    file_data = file.read()
+                    try:
+                        file_data = file.read()
 
-                    encrypted = f.encrypt(file_data)
+                        encrypted = f.encrypt(file_data)
                 
-                    with open(filepath, 'wb') as file:
-                        file.write(encrypted)
-                        logfile.writelines("Encrypted: " + str(filepath) + "\n")
-                        print("Encrypted: " + str(filepath))
+                        with open(filepath, 'wb') as file:
+                            file.write(encrypted)
+                            logfile.writelines("Encrypted: " + str(filepath) + "\n")
+                            print("Encrypted: " + str(filepath))
+                    except:
+                        logfile.writelines("Failed to Decrypt: " + str(filepath) + "\n")
+                        print("Failed to Encrypt: " + str(filepath))
+                        continue
         return
                 
     else:
@@ -91,7 +96,7 @@ def encrypt_auto(filename, password, salt):
                 return file.write(encrypted)
 
 def decrypt_auto(filename, password, salt):
-    logfile = open('CryptingLog.txt', 'w')
+    logfile = open('Crypting.Log', 'w')
     salt = bytes(salt, encoding='utf-8')
     password = bytes(password, encoding='utf-8')
     kdf = PBKDF2HMAC(
@@ -104,22 +109,24 @@ def decrypt_auto(filename, password, salt):
 
     f = Fernet(key)
 
-    if filename == '.':
-        return print("You are trying to decrypt the current folder.")
-
     if os.path.isdir(filename):
         for subdir, dirs, files_indir in os.walk(filename):
             for filename_indir in files_indir:
                 filepath = subdir + os.sep + filename_indir
                 with open(filepath, 'rb') as file:
-                    file_data = file.read()
+                    try:
+                        file_data = file.read()
 
-                    decrypted = f.decrypt(file_data)
+                        decrypted = f.decrypt(file_data)
                 
-                    with open(filepath, 'wb') as file:
-                        file.write(decrypted)
-                        logfile.writelines("Decrypted: " + str(filepath) + "\n")
-                        print("Decrypted: " + str(filepath))
+                        with open(filepath, 'wb') as file:
+                            file.write(decrypted)
+                            logfile.writelines("Decrypted: " + str(filepath) + "\n")
+                            print("Decrypted: " + str(filepath))
+                    except:
+                        logfile.writelines("Failed to Decrypt: " + str(filepath) + "\n")
+                        print("Failed to Decrypt: " + str(filepath))
+                        continue
         return
                 
     else:
