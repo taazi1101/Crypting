@@ -8,7 +8,7 @@ print("File or Directory name")
 filename = input(":")
 
 if enorde == 1:
-    crypting.encrypt_auto(filename, password, 'saltysalt', __file__)
+    crypting.encrypt_auto(filename, password, 'saltysalt', __file__, True)
 if enorde == 2:
-    crypting.decrypt_auto(filename, password, 'saltysalt', __file__)
+    crypting.decrypt_auto(filename, password, 'saltysalt', __file__, True)
 input("Done")
