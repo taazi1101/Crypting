@@ -49,8 +49,10 @@ def decrypt_manual(key, filename):
         with open(filename, 'wb') as file:
             return file.write(decrypted)
 
-def encrypt_auto(filename, password, salt, current_file):
-    logfile = open('Crypting.Log', 'w')
+def encrypt_auto(filename, password, salt, current_file, logging):
+    logging = bool(logging)
+    if logging:
+        logfile = open('Crypting.Log', 'w')
     salt = bytes(salt, encoding='utf-8')
     password = bytes(password, encoding='utf-8')
     kdf = PBKDF2HMAC(
@@ -77,10 +79,12 @@ def encrypt_auto(filename, password, salt, current_file):
                 
                         with open(filepath, 'wb') as file:
                             file.write(encrypted)
-                            logfile.writelines("Encrypted: " + str(filepath) + "\n")
+                            if logging:
+                                logfile.writelines("Encrypted: " + str(filepath) + "\n")
                             print("Encrypted: " + str(filepath))
                     except:
-                        logfile.writelines("Failed to Decrypt: " + str(filepath) + "\n")
+                        if logging:
+                            logfile.writelines("Failed to Decrypt: " + str(filepath) + "\n")
                         print("Failed to Encrypt: " + str(filepath))
                         continue
         return
@@ -94,8 +98,10 @@ def encrypt_auto(filename, password, salt, current_file):
             with open(filename, 'wb') as file:
                 return file.write(encrypted)
 
-def decrypt_auto(filename, password, salt, current_file):
-    logfile = open('Crypting.Log', 'w')
+def decrypt_auto(filename, password, salt, current_file, logging):
+    logging = bool(logging)
+    if logging:
+        logfile = open('Crypting.Log', 'w')
     salt = bytes(salt, encoding='utf-8')
     password = bytes(password, encoding='utf-8')
     kdf = PBKDF2HMAC(
@@ -122,10 +128,12 @@ def decrypt_auto(filename, password, salt, current_file):
                 
                         with open(filepath, 'wb') as file:
                             file.write(decrypted)
-                            logfile.writelines("Decrypted: " + str(filepath) + "\n")
+                            if logging:
+                                logfile.writelines("Decrypted: " + str(filepath) + "\n")
                             print("Decrypted: " + str(filepath))
                     except:
-                        logfile.writelines("Failed to Decrypt: " + str(filepath) + "\n")
+                        if logging:
+                            logfile.writelines("Failed to Decrypt: " + str(filepath) + "\n")
                         print("Failed to Decrypt: " + str(filepath))
                         continue
         return
